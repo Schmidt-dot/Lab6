@@ -4,6 +4,8 @@
 #include<cstdint>
 #include<string>
 #include<random>
+#include<iomanip>
+
 
 //ДАННЫЕ ДЛЯ ШИФРОВАНИЯ
 const uint8_t Sbox[256] = {
@@ -44,7 +46,8 @@ const uint8_t InvSbox[256] = {
     0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
 };
 
-const uint8_t Rcon[10] = {
+//РАУНДОВАЯ КОНСТАНТА
+const uint8_t Rcon[10] = { 
     0x01,
     0x02,
     0x04,
@@ -57,7 +60,41 @@ const uint8_t Rcon[10] = {
     0x36
 }; 
 
+//ДЛИНА БЛОКА ТЕКУЩЕЙ ВЕРСИИ AES 
+const int N = 16;
+
+//ЧИСЛО РАУНДОВ ДЛЯ ТЕКУЩЕЙ ВЕРСИИ AES
+const int r = 10;
+
 //ИНИЦИАЛИЗАЦИЯ ФУНКЦИЙ
 
+std::vector<uint8_t> addPadding(const std::string& text);
+std::vector<uint8_t> removePadding(std::vector<uint8_t> bytes);
+void printHex(const std::vector<uint8_t>& data);
+void printState(const std::vector<uint8_t>& block);
+std::vector<uint8_t> CipherKey();
+std::vector<uint8_t> GenerateIV();
+std::vector<uint8_t> RotWord(std::vector<uint8_t> word);
+std::vector<uint8_t> SubWord(std::vector<uint8_t> word);
+std::vector<uint8_t> KeyExpansion(const std::vector<uint8_t>& cipherKey, const int& N, const int& r);
+std::vector<uint8_t> GetRoundKey(const std::vector<uint8_t>& expandedKey, int round);
+void printRoundKeys(const std::vector<uint8_t>& expandedKey);
+void AddRoundKey(std::vector<uint8_t>& block, const std::vector<uint8_t>& roundKey);
+void SubBytes(std::vector<uint8_t>& data);
+void InvSubBytes(std::vector<uint8_t>& data);
+void ShiftRows(std::vector<uint8_t>& data);
+void InvShiftRows(std::vector<uint8_t>& data);
+uint8_t MultGaloisField_2(uint8_t value);
+uint8_t MultGaloisField_3(uint8_t value);
+uint8_t MultGaloisField_9(uint8_t value);
+uint8_t MultGaloisField_11(uint8_t value);
+uint8_t MultGaloisField_13(uint8_t value);
+uint8_t MultGaloisField_14(uint8_t value);
+void MixColumns(std::vector<uint8_t>& data);
+void InvMixColumns(std::vector<uint8_t>& block);
+std::vector<uint8_t> EncryptBlock(std::vector<uint8_t> PlainText, const std::vector<uint8_t>& expandedKey);
+std::vector<uint8_t> Encryption(const std::string& text, const std::vector<uint8_t>& cipherKey, const std::vector<uint8_t>& iv);
+std::vector<uint8_t> DecryptBlock(std::vector<uint8_t> ChiperText, const std::vector<uint8_t>& expandedKey);
+std::vector<uint8_t> Decryption(const std::vector<uint8_t>& ChiperText, const std::vector<uint8_t>& cipherKey, const std::vector<uint8_t>& iv);
 
 int main();
