@@ -2,6 +2,10 @@
 #include<iomanip>
 #include<cmath>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 using namespace std;
 
 const int COUNT = 4; //кол-во уравнений и решений
@@ -192,6 +196,10 @@ void zeidel() {
 
 int main() {
 
+#ifdef _WIN32
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+#endif
 
     cout << "Система уравнений:" << endl;
 
